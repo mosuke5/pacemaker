@@ -27,3 +27,9 @@
 
 - name: Change /etc/sysconfig/pacemaker
   template: src=etc_sysconfig_pacemaker.j2 dest=/etc/sysconfig/pacemaker
+
+- name: Corosync should be starting
+  service: name=corosync state=started enable=yes
+
+- name: Pacemaker should be starting
+  service: name=pacemaker state=started enable=yes
