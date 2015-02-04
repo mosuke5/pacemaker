@@ -1,0 +1,20 @@
+---
+
+#
+# Server settings
+#
+#- name: Upgrade all package
+#  yum: state=latest name=* disablerepo=linux-ha-ja-pacemaker
+
+- name: Install epel-release
+  yum: name=epel-release enablerepo=epel state=latest
+
+- name: Install utility packages
+  yum: name={{ item }} enablerepo=epel state=latest
+  with_items:
+    - wget
+    - httpd
+
+- name: Set a index page
+  template: src=index.html.j2 dest=/var/www/html/index.html
+

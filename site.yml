@@ -1,0 +1,7 @@
+---
+- name: Setup ha server
+  hosts: all
+  sudo: yes
+  roles:
+    - common
+    - ha

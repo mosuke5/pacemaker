@@ -1,0 +1,29 @@
+---
+
+- name: Copy pacemaker-repo
+  copy: src="./data/pacemaker-repo-1.1.12-1.1.el6.x86_64.rpm" dest="/tmp"
+
+- name: Check if pacemaker-repo install
+  command: "rpm -qa | grep pacemaker-repo"
+
+- name: Install pacemaker-repo
+  command: "rpm -ivh /tmp/pacemaker-repo-1.1.12-1.1.el6.x86_64.rpm"
+  ignore_errors: true
+
+- name: Install pacemaker and corosync packages
+  yum: name=pacemaker-all
+
+- name: Set corosync.conf
+  template: src=corosync.conf.j2 dest=/etc/corosync/corosync.conf
+
+- name: Check corosync authkey
+  command: "ls /etc/corosync/authkey"
+  register: authkey_exist
+  ignore_errors: true
+
+- name: Copy corosync authkey
+  copy: src="./data/corosync_authkey" dest="/etc/corosync/authkey" owner=root group=root mode=0600
+  when: authkey_exist|failed
+
+- name: Change /etc/sysconfig/pacemaker
+  template: src=etc_sysconfig_pacemaker.j2 dest=/etc/sysconfig/pacemaker
