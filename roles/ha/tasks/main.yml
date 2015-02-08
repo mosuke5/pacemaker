@@ -11,7 +11,10 @@
   ignore_errors: true
 
 - name: Install pacemaker and corosync packages
-  yum: name=pacemaker-all
+  yum: name={{ item }} state=latest
+  with_items:
+    - pacemaker-all
+    - pcs
 
 - name: Set corosync.conf
   template: src=corosync.conf.j2 dest=/etc/corosync/corosync.conf
@@ -29,7 +32,7 @@
   template: src=etc_sysconfig_pacemaker.j2 dest=/etc/sysconfig/pacemaker
 
 - name: Corosync should be starting
-  service: name=corosync state=started enable=yes
+  service: name=corosync state=started enabled=yes
 
 - name: Pacemaker should be starting
-  service: name=pacemaker state=started enable=yes
+  service: name=pacemaker state=started enabled=yes

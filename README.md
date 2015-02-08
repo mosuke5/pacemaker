@@ -12,6 +12,7 @@ Vagrantで立ち上げるサーバは以下のIPが前提で記載。
 ## 使い方
 
 ### playbook実行
+sudoパスワードを効かれる環境では-Kをつけること。Ansibleが15分ほど止まります…
 ```
 $ ansible-playbook -i hosts site.yml -u vagrant -k
 ```
